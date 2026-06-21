@@ -156,6 +156,40 @@ function LoadingSkeleton() {
   );
 }
 
+const EXAMPLE_RESULT: DiagnosisResult = {
+  signature: "4xQy7…ExampleAnchorConstraintSeedsFailure…9kRz",
+  network: "mainnet",
+  status: "failed",
+  error: {
+    code: "0x7d6",
+    name: "ConstraintSeeds",
+    raw: "Instruction #2: ConstraintSeeds (0x7d6)",
+  },
+  rootCause:
+    "The PDA derived from the provided seeds doesn't match the account passed to the instruction. The program expected a different bump or seed ordering.",
+  evidence: [
+    "Error: Instruction #2: ConstraintSeeds (0x7d6)",
+    "Failing program: Anchor program (TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA)",
+    "Compute units consumed: 14,213",
+    "Program log: AnchorError caused by account: vault. Error Code: ConstraintSeeds.",
+    "Program log: Left: 8xZr…  Right: 5mPq…",
+  ],
+  fix: "The PDA derived from seeds doesn't match the account passed. Verify your seed values and encoding match the on-chain program exactly.",
+  fixCode: `const [expectedPda] = PublicKey.findProgramAddressSync(\n  [Buffer.from("vault"), authority.toBuffer()],\n  programId\n);\n// Pass expectedPda — not a manually constructed address`,
+  prevention:
+    "Double-check PDA seed encoding (Buffer.from vs TextEncoder vs bs58) and seed ordering against the program's #[account(seeds = ...)] constraint.",
+  computeUnits: 14213,
+  fee: 5000,
+  programId: "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+  logs: [
+    "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]",
+    "Program log: Instruction: Withdraw",
+    "Program log: AnchorError caused by account: vault. Error Code: ConstraintSeeds. Error Number: 2006.",
+    "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 14213 of 200000 compute units",
+    "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA failed: custom program error: 0x7d6",
+  ],
+};
+
 export default function Home() {
   const [signature, setSignature] = useState("");
   const [network, setNetwork] = useState("mainnet");
@@ -193,6 +227,17 @@ export default function Home() {
     } finally {
       setLoading(false);
     }
+  }
+
+  function loadExample() {
+    setError(null);
+    setShowLogs(false);
+    setLoading(true);
+    setResult(null);
+    setTimeout(() => {
+      setResult(EXAMPLE_RESULT);
+      setLoading(false);
+    }, 600);
   }
 
   const getStatusConfig = (status: string) => {
@@ -349,6 +394,18 @@ export default function Home() {
               </button>
             </div>
           </form>
+
+          <div className="mt-4 pt-4 border-t border-white/[0.05] flex items-center justify-between">
+            <span className="text-xs text-gray-600">No signature handy?</span>
+            <button
+              onClick={loadExample}
+              disabled={loading}
+              className="text-xs text-gray-400 hover:text-white transition-colors flex items-center gap-1.5 disabled:opacity-40"
+            >
+              <ZapIcon className="w-3.5 h-3.5" />
+              See an example diagnosis
+            </button>
+          </div>
         </div>
 
         {/* Error */}

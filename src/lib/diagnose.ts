@@ -240,20 +240,49 @@ export async function diagnoseTransaction(
   signature: string,
   network: string = "mainnet"
 ): Promise<DiagnosisResult> {
+  const BASE58_RE = /^[1-9A-HJ-NP-Za-km-z]{43,90}$/;
+  if (!BASE58_RE.test(signature)) {
+    return {
+      signature,
+      network,
+      status: "not_found",
+      evidence: [
+        "That doesn't look like a valid transaction signature.",
+        "A Solana signature is an 87–88 character base58 string (no 0, O, I, or l).",
+      ],
+    };
+  }
+
   const rpcUrl = getRpcUrl(network);
   const connection = new Connection(rpcUrl, "confirmed");
 
-  const tx = await connection.getTransaction(signature, {
-    maxSupportedTransactionVersion: true,
-    commitment: "confirmed",
-  });
+  let tx: any = null;
+  try {
+    tx = await connection.getTransaction(signature, {
+      maxSupportedTransactionVersion: true,
+      commitment: "confirmed",
+    });
+  } catch (rpcErr) {
+    const msg = rpcErr instanceof Error ? rpcErr.message : "RPC request failed";
+    return {
+      signature,
+      network,
+      status: "not_found",
+      evidence: [
+        "Could not fetch this transaction from the RPC.",
+        msg.includes("429") || msg.toLowerCase().includes("rate")
+          ? "The public RPC is rate-limited. Add a Helius API key for reliable results."
+          : msg,
+      ],
+    };
+  }
 
   if (!tx) {
     return {
       signature,
       network,
       status: "not_found",
-      evidence: ["Transaction not found — may be unconfirmed, expired, or on a different network."],
+      evidence: ["Transaction not found — it may be unconfirmed, expired beyond RPC history, or on a different network. Try switching networks."],
     };
   }
 
