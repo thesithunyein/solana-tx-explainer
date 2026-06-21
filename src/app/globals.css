@@ -4,25 +4,97 @@
 
 :root {
   color-scheme: dark;
+  --font-inter: "Inter", system-ui, sans-serif;
+  --font-jetbrains: "JetBrains Mono", monospace;
 }
 
 body {
-  background-color: #0B0F19;
+  background-color: #070A12;
   color: #E5E7EB;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
+
+/* Ambient gradient background */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(153, 69, 255, 0.12), transparent),
+    radial-gradient(ellipse 60% 50% at 80% 50%, rgba(20, 241, 149, 0.06), transparent);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Glassmorphism utility */
+.glass {
+  background: rgba(17, 22, 32, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(28, 39, 56, 0.8);
+}
+
+.glass-hover {
+  transition: all 0.2s ease;
+}
+.glass-hover:hover {
+  background: rgba(22, 29, 42, 0.8);
+  border-color: rgba(42, 58, 79, 1);
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, #9945FF 0%, #14F195 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Glow effects */
+.glow-purple {
+  box-shadow: 0 0 20px rgba(153, 69, 255, 0.15);
+}
+.glow-green {
+  box-shadow: 0 0 20px rgba(20, 241, 149, 0.15);
+}
+.glow-red {
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.15);
+}
+
+/* Shimmer loading */
+.shimmer {
+  background: linear-gradient(90deg, #111620 25%, #1C2738 50%, #111620 75%);
+  background-size: 200% 100%;
+  animation: shimmer 2s linear infinite;
 }
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #131722;
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1E2A3A;
-  border-radius: 4px;
+  background: #1C2738;
+  border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #2A3A4A;
+  background: #2A3A4F;
+}
+
+/* Selection */
+::selection {
+  background: rgba(153, 69, 255, 0.3);
+  color: #fff;
+}
+
+/* Focus ring */
+.focus-ring:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(153, 69, 255, 0.5);
 }
