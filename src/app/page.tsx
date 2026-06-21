@@ -238,8 +238,8 @@ export default function Home() {
   return (
     <main className="relative min-h-screen z-10">
       {/* Nav */}
-      <nav className="border-b border-sol-border/50 backdrop-blur-md sticky top-0 z-50 bg-sol-darker/80">
-        <div className="max-w-3xl mx-auto px-6 h-14 flex items-center justify-between">
+      <nav className="border-b border-white/[0.06] backdrop-blur-xl sticky top-0 z-50 bg-black/40">
+        <div className="max-w-2xl mx-auto px-6 h-14 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-sol-purple to-sol-green flex items-center justify-center">
               <BugIcon className="w-4 h-4 text-white" />
@@ -269,92 +269,84 @@ export default function Home() {
       </nav>
 
       {/* Hero + Input */}
-      <div className="max-w-3xl mx-auto px-6 pt-16 pb-24">
+      <div className="max-w-2xl mx-auto px-6 pt-24 pb-32">
         {/* Hero */}
-        <div className="text-center mb-10 animate-fade-in-up">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-sol-border bg-sol-card/50 text-xs text-gray-400 mb-6">
-            <span className="w-1.5 h-1.5 rounded-full bg-sol-green animate-pulse-glow" />
+        <div className="text-center mb-12 animate-fade-in-up">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-white/[0.08] bg-white/[0.02] text-[13px] text-gray-400 mb-8 backdrop-blur-sm">
+            <span className="relative flex h-1.5 w-1.5">
+              <span className="absolute inline-flex h-full w-full rounded-full bg-sol-green opacity-75 animate-ping" />
+              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-sol-green" />
+            </span>
             Powered by Solana AI Kit
           </div>
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-4">
+          <h1 className="text-5xl sm:text-6xl font-semibold tracking-tightest mb-5 leading-[1.05]">
             <span className="text-white">Debug any</span>
             <br />
             <span className="gradient-text">Solana transaction</span>
           </h1>
-          <p className="text-gray-400 text-base max-w-xl mx-auto leading-relaxed">
-            Paste a transaction signature to get an instant human-readable diagnosis,
-            root cause analysis, and a concrete fix with code snippets.
+          <p className="text-gray-400 text-[17px] max-w-lg mx-auto leading-relaxed tracking-normal">
+            Paste a transaction signature to get an instant, human-readable diagnosis —
+            root cause, a concrete fix, and how to prevent it.
           </p>
         </div>
 
         {/* Input Card */}
-        <div className="glass rounded-2xl p-6 glow-purple animate-fade-in-up" style={{ animationDelay: "0.1s" }}>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wider">
-                Transaction Signature
-              </label>
-              <div className="relative">
-                <SearchIcon className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600" />
-                <input
-                  type="text"
-                  value={signature}
-                  onChange={(e) => setSignature(e.target.value)}
-                  placeholder="5Kj8n2Wp... or full 88-char signature"
-                  className="w-full pl-10 pr-4 py-3.5 bg-sol-darker/80 border border-sol-border rounded-xl text-white placeholder-gray-600 focus:outline-none focus:border-sol-purple/50 focus:ring-1 focus:ring-sol-purple/30 transition-all font-mono text-sm"
-                  disabled={loading}
-                />
-              </div>
+        <div className="glass rounded-2xl p-5 glow-purple animate-fade-in-up" style={{ animationDelay: "0.1s" }}>
+          <form onSubmit={handleSubmit} className="space-y-3">
+            <div className="relative">
+              <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-gray-500" />
+              <input
+                type="text"
+                value={signature}
+                onChange={(e) => setSignature(e.target.value)}
+                placeholder="Paste a transaction signature…"
+                className="w-full pl-11 pr-4 py-4 bg-black/30 border border-white/[0.06] rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-sol-purple/40 focus:bg-black/40 transition-all font-mono text-sm"
+                disabled={loading}
+                autoFocus
+              />
             </div>
 
             <div className="flex gap-3">
-              <div className="flex-1">
-                <label className="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wider">
-                  Network
-                </label>
-                <div className="flex gap-2">
-                  {[
-                    { value: "mainnet", label: "Mainnet" },
-                    { value: "devnet", label: "Devnet" },
-                  ].map((opt) => (
-                    <button
-                      key={opt.value}
-                      type="button"
-                      onClick={() => setNetwork(opt.value)}
-                      disabled={loading}
-                      className={`flex-1 py-2.5 px-4 rounded-xl text-sm font-medium transition-all border ${
-                        network === opt.value
-                          ? "border-sol-purple/40 bg-sol-purple/10 text-white"
-                          : "border-sol-border bg-sol-darker/50 text-gray-500 hover:text-gray-300 hover:border-sol-border-light"
-                      }`}
-                    >
-                      {opt.label}
-                    </button>
-                  ))}
-                </div>
+              <div className="flex gap-1 p-1 rounded-xl bg-black/30 border border-white/[0.06]">
+                {[
+                  { value: "mainnet", label: "Mainnet" },
+                  { value: "devnet", label: "Devnet" },
+                ].map((opt) => (
+                  <button
+                    key={opt.value}
+                    type="button"
+                    onClick={() => setNetwork(opt.value)}
+                    disabled={loading}
+                    className={`px-4 py-2.5 rounded-lg text-[13px] font-medium transition-all ${
+                      network === opt.value
+                        ? "bg-white/[0.08] text-white shadow-soft"
+                        : "text-gray-500 hover:text-gray-300"
+                    }`}
+                  >
+                    {opt.label}
+                  </button>
+                ))}
               </div>
-              <div className="flex items-end">
-                <button
-                  type="submit"
-                  disabled={loading || !signature.trim()}
-                  className="px-7 py-3.5 bg-gradient-to-r from-sol-purple to-sol-green text-white font-semibold rounded-xl hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed transition-all flex items-center gap-2"
-                >
-                  {loading ? (
-                    <>
-                      <svg className="w-4 h-4 animate-spin-slow" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                      </svg>
-                      Diagnosing
-                    </>
-                  ) : (
-                    <>
-                      <ZapIcon className="w-4 h-4" />
-                      Diagnose
-                    </>
-                  )}
-                </button>
-              </div>
+              <button
+                type="submit"
+                disabled={loading || !signature.trim()}
+                className="flex-1 py-3 bg-white text-black font-semibold rounded-xl hover:bg-gray-100 disabled:opacity-30 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2 text-[15px]"
+              >
+                {loading ? (
+                  <>
+                    <svg className="w-4 h-4 animate-spin-slow" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                    </svg>
+                    Diagnosing…
+                  </>
+                ) : (
+                  <>
+                    <ZapIcon className="w-[18px] h-[18px]" />
+                    Diagnose
+                  </>
+                )}
+              </button>
             </div>
           </form>
         </div>
@@ -455,7 +447,7 @@ export default function Home() {
 
             {/* Prevention */}
             {result.prevention && (
-              <SectionCard title="Prevention" icon={<ShieldIcon className="w-4 h-4" />">
+              <SectionCard title="Prevention" icon={<ShieldIcon className="w-4 h-4" />}>
                 <p className="text-gray-300 text-xs leading-relaxed">{result.prevention}</p>
               </SectionCard>
             )}
@@ -531,7 +523,7 @@ export default function Home() {
               />
             </div>
 
-            {/* How it works */
+            {/* How it works */}
             <div className="mt-10 glass rounded-2xl p-6">
               <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
                 <TerminalIcon className="w-4 h-4 text-sol-purple" />
@@ -557,8 +549,8 @@ export default function Home() {
       </div>
 
       {/* Footer */}
-      <footer className="border-t border-sol-border/50 mt-auto">
-        <div className="max-w-3xl mx-auto px-6 py-8">
+      <footer className="border-t border-white/[0.06] mt-auto">
+        <div className="max-w-2xl mx-auto px-6 py-8">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-2 text-xs text-gray-600">
               <div className="w-5 h-5 rounded bg-gradient-to-br from-sol-purple to-sol-green flex items-center justify-center">
