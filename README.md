@@ -2,7 +2,7 @@
 
 > Paste a Solana transaction signature → get a human-readable diagnosis and suggested fix.
 
-This is the live demo companion to the [solana-tx-debugger-skill](https://github.com/YOUR_USERNAME/solana-tx-debugger-skill). It uses the same error-decoding logic as the Claude Code skill, wrapped in a web UI.
+This is the live demo companion to the [solana-tx-debugger-skill](https://github.com/thesithunyein/solana-tx-debugger-skill). It uses the same error-decoding logic as the Claude Code skill, wrapped in a web UI.
 
 ## Quick Start
 
