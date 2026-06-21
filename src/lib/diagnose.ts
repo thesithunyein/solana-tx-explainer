@@ -258,7 +258,7 @@ export async function diagnoseTransaction(
   }
 
   const meta = tx.meta;
-  const logs = meta?.logMessages ?? [];
+  const logs: string[] = meta?.logMessages ?? [];
   const computeUnits = meta?.computeUnitsConsumed;
   const fee = meta?.fee;
   const err = meta?.err;
